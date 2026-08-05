@@ -1,0 +1,9 @@
+# Configuration for import-csv.py
+
+# The work-order CSV to upload. A relative path is resolved against this file's
+# directory. See ../README.md for the CSV format.
+# To test your setup first, try: csv_path = "sample.csv" --once
+csv_path = "data/export.csv"
+
+# How often to upload, in seconds (86400 = once per day).
+interval_seconds = 86400

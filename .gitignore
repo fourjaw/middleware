@@ -1,0 +1,24 @@
+# Secrets — never commit real API keys. Copy .env.example to .env locally.
+.env
+.env.*
+!.env.example
+
+# Local CSV data.
+data/
+*.csv
+!import-csv/**/sample.csv
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Editor / OS cruft
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,22 @@
+{
+  "name": "fourjaw-import-csv-middleware",
+  "version": "1.0.0",
+  "description": "Periodically uploads a work-order CSV file from disk to the FourJaw API.",
+  "type": "module",
+  "main": "import-csv.js",
+  "bin": {
+    "import-csv": "import-csv.js"
+  },
+  "scripts": {
+    "start": "node import-csv.js",
+    "once": "node import-csv.js --once",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20.3"
+  },
+  "dependencies": {
+    "dotenv": "17.4.2",
+    "smol-toml": "1.7.1"
+  }
+}

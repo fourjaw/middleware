@@ -1,0 +1,11 @@
+# 3.11 is the floor this script needs, for the stdlib tomllib.
+target-version = "py311"
+line-length = 88
+
+[lint]
+extend-select = [
+  "I",   # import sorting
+  "UP",  # pyupgrade
+  "B",   # bugbear
+  "EXE", # shebang/executable-bit consistency
+]

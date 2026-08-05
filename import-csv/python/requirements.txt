@@ -1,0 +1,5 @@
+# Pinned exactly, so a machine provisioned next month installs the same code.
+# urllib3 is listed because import-csv.py imports Retry from it directly.
+requests==2.34.2
+python-dotenv==1.2.2
+urllib3==2.7.0
