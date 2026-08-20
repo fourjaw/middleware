@@ -166,7 +166,7 @@ describe("attemptUpload", () => {
   const config = { apiKey: "test-key", csvPath: "/tmp/a.csv" };
   const stop = { signal: new AbortController().signal };
 
-  it("sends the CSV as octet-stream with the API key, and returns the import id", async () => {
+  it("sends the CSV as octet-stream with a Bearer token, and returns the import id", async () => {
     let seen;
     globalThis.fetch = async (url, init) => {
       seen = { url, init };
@@ -177,7 +177,8 @@ describe("attemptUpload", () => {
 
     assert.equal(result.ok, true);
     assert.equal(seen.init.method, "POST");
-    assert.equal(seen.init.headers["X-API-KEY"], "test-key");
+    assert.equal(seen.init.headers["Authorization"], "Bearer test-key");
+    assert.equal(seen.init.headers["X-API-KEY"], undefined);
     assert.equal(seen.init.headers["Content-Type"], "application/octet-stream");
     assert.equal(seen.init.body.toString(), "a,b\n");
   });

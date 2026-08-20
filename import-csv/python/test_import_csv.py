@@ -247,7 +247,7 @@ class TestPostCsv(ConfigTestCase):
         )
         return csv_import.load_config(path)
 
-    def test_sends_the_csv_as_octet_stream_with_the_api_key(self):
+    def test_sends_the_csv_as_octet_stream_with_a_bearer_token(self):
         config = self.config()
         session = FakeSession(FakeResponse(200, '{"id": "imp-7"}'))
 
@@ -256,7 +256,8 @@ class TestPostCsv(ConfigTestCase):
         (call,) = session.calls
         self.assertEqual(call["url"], csv_import.ENDPOINT)
         self.assertEqual(call["data"], self.CSV.encode())
-        self.assertEqual(call["headers"]["X-API-KEY"], "test-key")
+        self.assertEqual(call["headers"]["Authorization"], "Bearer test-key")
+        self.assertNotIn("X-API-KEY", call["headers"])
         self.assertEqual(call["headers"]["Content-Type"], "application/octet-stream")
         self.assertEqual(call["timeout"], csv_import.REQUEST_TIMEOUT_SECONDS)
 

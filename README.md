@@ -12,8 +12,19 @@ in a few minutes, and meant to be adapted to your own environment.
 
 ## Authentication
 
-All middleware authenticates with a FourJaw API key sent in the `X-API-KEY`
-request header. Keep your key secret.
+Each middleware's README states the API it calls and how it authenticates. The
+middleware here uses a FourJaw API key sent as a bearer token:
+
+```
+Authorization: Bearer <your-api-key>
+```
+
+Keys are created in the FourJaw web app under **Personal settings → API keys**. A
+key belongs to the person who created it, not to your company account, so calls
+made with it are attributed to that user, and it stops working when the key is
+deleted or expires. Choose an owner who will outlast the integration rather than
+whoever happens to set it up. Keep your key secret, and give each integration its
+own so one can be revoked without disturbing the others.
 
 ## Middleware
 

@@ -13,8 +13,8 @@ import { parseArgs } from "node:util";
 import { parse as parseToml } from "smol-toml";
 import { config as loadDotenv } from "dotenv";
 
-const ENDPOINT = "https://fourjaw.app/analytics/api/v0.1/work-booking/upload";
-// Your API key identifies your FourJaw account.
+const ENDPOINT = "https://fourjaw.app/api/v1/work-booking/imports";
+// Generate a key in the FourJaw web app under Personal settings -> API keys.
 const API_KEY_ENV = "FOURJAW_API_KEY";
 
 const REQUEST_TIMEOUT_MS = 30_000;
@@ -100,7 +100,7 @@ async function attemptUpload(config, data, stop) {
     response = await fetch(ENDPOINT, {
       method: "POST",
       headers: {
-        "X-API-KEY": config.apiKey,
+        Authorization: `Bearer ${config.apiKey}`,
         "Content-Type": "application/octet-stream",
       },
       body: data,
@@ -130,7 +130,7 @@ async function attemptUpload(config, data, stop) {
     };
   }
 
-  // Poll GET /work-booking/imports?importIds=<id> for processing state.
+  // Poll GET /work-booking/imports?import_ids=<id> for processing state.
   const body = await response.json().catch(() => ({}));
   log(
     "INFO",

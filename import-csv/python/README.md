@@ -14,7 +14,7 @@ See [`../README.md`](../README.md) for the API call and CSV format.
 Each cycle the script reads the CSV as raw bytes and uploads it with:
 
 - `Content-Type: application/octet-stream`
-- `X-API-KEY: <api-key>`
+- `Authorization: Bearer <api-key>`
 
 On success it logs the returned import job id. It then sleeps for the configured
 interval and repeats. `Ctrl-C` / `SIGTERM` interrupt that wait, so it shuts down
@@ -51,7 +51,8 @@ pip install -r requirements.txt
 
 ## Setup
 
-1. Copy the env template and fill in your real FourJaw API key:
+1. Copy the env template and fill in your real FourJaw API key (see
+   [Getting an API key](../README.md#getting-an-api-key)):
 
    ```bash
    cp .env.example .env
@@ -109,7 +110,9 @@ script.
 
 ## Notes
 
-- **Auth**: the script sends your FourJaw API key in the `X-API-KEY` header. The
-  key identifies your FourJaw account.
+- **Auth**: the script sends your FourJaw API key as a bearer token —
+  `Authorization: Bearer <api-key>`. The key belongs to the user who created it,
+  not to your company account. See
+  [Getting an API key](../README.md#getting-an-api-key).
 - **Scheduling**: the script self-loops, but you can instead run `--once` on a
   cron/systemd timer if you prefer external scheduling.

@@ -13,19 +13,30 @@ Both behave identically:
 
 - Read a `config.toml` for the CSV path and upload interval.
 - Read the FourJaw API key from a `.env` file (never committed).
-- `POST` the raw CSV bytes as `application/octet-stream` with an `X-API-KEY`
-  header, then sleep and repeat.
+- `POST` the raw CSV bytes as `application/octet-stream` with an
+  `Authorization: Bearer` header, then sleep and repeat.
 - Support a `--once` flag to upload a single time (handy for testing).
 - Ship unit tests that run offline, using each language's built-in test runner —
   see the language README for the command.
+
+## Getting an API key
+
+Keys are created in the FourJaw web app under **Personal settings → API keys**:
+open the account menu, choose **Personal settings**, then **API keys**, and
+generate a key. The key is shown once, so copy it straight into your `.env`.
+
+A key belongs to the person who created it, not to your company account — calls
+made with it are attributed to that user, and it stops working when the key is
+deleted or expires. Give each integration its own key so one can be revoked
+without disturbing the others.
 
 ## The API call
 
 Each upload is a single request to the FourJaw work-booking endpoint:
 
 ```
-POST https://fourjaw.app/analytics/api/v0.1/work-booking/upload
-X-API-KEY: <your-api-key>
+POST https://fourjaw.app/api/v1/work-booking/imports
+Authorization: Bearer <your-api-key>
 Content-Type: application/octet-stream
 
 <raw CSV bytes>
@@ -41,11 +52,11 @@ Processing is asynchronous — poll for the state of the import, and any rejecte
 rows, using that id:
 
 ```
-GET https://fourjaw.app/analytics/api/v0.1/work-booking/imports?importIds=<id>
-X-API-KEY: <your-api-key>
+GET https://fourjaw.app/api/v1/work-booking/imports?import_ids=<id>
+Authorization: Bearer <your-api-key>
 ```
 
-`importIds` is required, and accepts more than one id.
+`import_ids` is required, and accepts more than one id.
 
 ## CSV format
 
@@ -66,7 +77,7 @@ You do **not** have to reshape your export to match, for two reasons:
   than transforming the CSV before sending it.
 
 Two endpoints help you get this right: `GET /work-booking/template` returns a
-template CSV with the canonical header row, and `POST /work-booking/preview`
+template CSV with the canonical header row, and `POST /work-booking/imports/preview`
 parses only the header row and the first few rows, so you can confirm a mapping
 before uploading a whole file.
 

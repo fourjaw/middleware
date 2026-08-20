@@ -27,8 +27,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("post_csv")
 
-ENDPOINT = "https://fourjaw.app/analytics/api/v0.1/work-booking/upload"
-# Your API key identifies your FourJaw account.
+ENDPOINT = "https://fourjaw.app/api/v1/work-booking/imports"
+# Generate a key in the FourJaw web app under Personal settings -> API keys.
 API_KEY_ENV = "FOURJAW_API_KEY"
 
 REQUEST_TIMEOUT_SECONDS = 30
@@ -127,7 +127,7 @@ def post_csv(config: Config, session: requests.Session) -> bool:
         return False
 
     headers = {
-        "X-API-KEY": config.api_key,
+        "Authorization": f"Bearer {config.api_key}",
         "Content-Type": "application/octet-stream",
     }
 
@@ -149,7 +149,7 @@ def post_csv(config: Config, session: requests.Session) -> bool:
         )
         return False
 
-    # Poll GET /work-booking/imports?importIds=<id> for processing state.
+    # Poll GET /work-booking/imports?import_ids=<id> for processing state.
     try:
         import_id = response.json().get("id", "?")
     except ValueError:
