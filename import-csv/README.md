@@ -32,10 +32,10 @@ without disturbing the others.
 
 ## The API call
 
-Each upload is a single request to the FourJaw work-booking endpoint:
+Each upload is a single request to the FourJaw work order imports endpoint:
 
 ```
-POST https://fourjaw.app/api/v1/work-booking/imports
+POST https://fourjaw.app/api/v1/work-orders/imports
 Authorization: Bearer <your-api-key>
 Content-Type: application/octet-stream
 
@@ -52,7 +52,7 @@ Processing is asynchronous — poll for the state of the import, and any rejecte
 rows, using that id:
 
 ```
-GET https://fourjaw.app/api/v1/work-booking/imports?import_ids=<id>
+GET https://fourjaw.app/api/v1/work-orders/imports?import_ids=<id>
 Authorization: Bearer <your-api-key>
 ```
 
@@ -72,14 +72,12 @@ You do **not** have to reshape your export to match, for two reasons:
 - **Extra columns are ignored.** Only those two are required, so in most cases
   you can upload what your ERP/MES already produces, unchanged.
 - **Your own header names can be mapped.** If your export calls them something
-  else, register a mapping once with `PUT /work-booking/header-mapping` and
-  FourJaw translates your headers on every upload after that — usually easier
-  than transforming the CSV before sending it.
+  else, register a mapping once with `PUT /work-orders/imports/header-mapping`
+  and FourJaw translates your headers on every upload after that — usually
+  easier than transforming the CSV before sending it.
 
-Two endpoints help you get this right: `GET /work-booking/template` returns a
-template CSV with the canonical header row, and `POST /work-booking/imports/preview`
-parses only the header row and the first few rows, so you can confirm a mapping
-before uploading a whole file.
+`GET /work-orders/imports/template` returns a template CSV with the canonical
+header row, if you want to check an export against it.
 
 Uploads that aren't CSV, are empty, or that leave a required column unresolved
 after mapping are rejected with `422`. The maximum upload size is 1 GiB; larger

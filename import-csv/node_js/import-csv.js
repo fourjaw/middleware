@@ -13,7 +13,7 @@ import { parseArgs } from "node:util";
 import { parse as parseToml } from "smol-toml";
 import { config as loadDotenv } from "dotenv";
 
-const ENDPOINT = "https://fourjaw.app/api/v1/work-booking/imports";
+const ENDPOINT = "https://fourjaw.app/api/v1/work-orders/imports";
 // Generate a key in the FourJaw web app under Personal settings -> API keys.
 const API_KEY_ENV = "FOURJAW_API_KEY";
 
@@ -130,7 +130,7 @@ async function attemptUpload(config, data, stop) {
     };
   }
 
-  // Poll GET /work-booking/imports?import_ids=<id> for processing state.
+  // Poll GET /work-orders/imports?import_ids=<id> for processing state.
   const body = await response.json().catch(() => ({}));
   log(
     "INFO",
